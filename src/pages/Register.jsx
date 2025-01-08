@@ -1,17 +1,17 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom"; // Correct import
 import useAuth from "../hooks/useAuth";
 
 function Register() {
   const { createUser } = useAuth();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    // Handle register logic here
+
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
 
-    createUser(data.email, data.password).than((userCredential) => {
-      // User registered successfully
+    try {
+      const userCredential = await createUser(data.email, data.password);
       console.log("User registered:", userCredential.user);
 
       const userData = {
@@ -19,18 +19,24 @@ function Register() {
         email: data.email,
       };
 
-      fetch(`http://localhost:3000/users`, {
+      const response = await fetch(`http://localhost:3000/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(userData),
-      })
-        .then((res) => res.json())
-        .them((data) => {
-          console.log(data);
-        });
-    });
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save user to database");
+      }
+
+      const result = await response.json();
+      console.log("User saved:", result);
+    } catch (error) {
+      console.error("Error during registration:", error);
+      alert("Registration failed. Please try again.");
+    }
   };
 
   return (
@@ -105,7 +111,7 @@ function Register() {
             <label htmlFor="agree" className="ml-2 text-sm text-gray-600">
               I agree to the{" "}
               <a
-                href="#"
+                href="/privacy-policy"
                 className="text-indigo-600 hover:underline focus:outline-none"
               >
                 Privacy Policy
@@ -125,7 +131,7 @@ function Register() {
         <p className="mt-6 text-sm text-center text-gray-600">
           Already have an account?{" "}
           <Link
-            to={"/login"}
+            to="/login"
             className="text-indigo-600 hover:underline focus:outline-none"
           >
             Login
