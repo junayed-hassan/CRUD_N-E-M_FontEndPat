@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Stack from "@mui/material/Stack";
-// import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 
-function App() {
+
+function Home() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [coffees, setCoffees] = useState([]);
@@ -345,4 +344,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;
