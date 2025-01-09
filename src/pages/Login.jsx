@@ -1,14 +1,46 @@
-import { Link } from "react-router";
-
+import { Link, useNavigate } from "react-router";
+import useAuth from "../hooks/useAuth";
 
 function Login() {
-  const handleLogin = (e) => {
+  const { loginUser } = useAuth();
+const navigate = useNavigate();
+
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Handle login logic here
     const formData = new FormData(e.target);
     const product = Object.fromEntries(formData);
-    console.log("Login form submitted!", product);
+  
+    try {
+      const result = await loginUser(product.email, product.password);
+      console.log(result);
+  
+      const lastLoginAt = result?.user?.metadata?.lastLoginAt || new Date().toISOString();
+      const email = result.user?.email || product.email;
+  
+      const userInfo = { lastLoginAt, email };
+  
+      const response = await fetch("http://localhost:3000/users", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userInfo),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log("User update successful:", data);
+      navigate("/");
+      e.target.reset();
+    } catch (error) {
+      console.error("Login or update failed:", error);
+    }
   };
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -31,6 +63,7 @@ function Login() {
               id="email"
               name="email"
               placeholder="Enter your email"
+              autoComplete="current-email"
               required
               className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
@@ -48,6 +81,7 @@ function Login() {
               id="password"
               name="password"
               placeholder="Enter your password"
+              autoComplete="current-password"
               required
               className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
@@ -88,7 +122,7 @@ function Login() {
         </p>
       </div>
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;

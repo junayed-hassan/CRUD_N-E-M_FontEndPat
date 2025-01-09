@@ -3,7 +3,7 @@ import Main from '../layOuts/Main';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
-import CreateUpdataCof from '../pages/CreateUpdataCof';
+import Users from '../pages/Users';
 
 const router = createBrowserRouter([
     {
@@ -23,8 +23,8 @@ const router = createBrowserRouter([
                 element: <Register />
             },
             {
-                path: "/CreateUpdataCof",
-                element: <CreateUpdataCof/>
+                path: "/users",
+                element: <Users/>
             }
         ]
     }

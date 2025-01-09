@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function Header() {
   return (
     <>
-      <ul className="flex gap-4 mx-auto mt-3 text-xl font-semibold w-96">
+      <ul className="flex gap-4 mx-auto my-3 text-xl font-semibold w-96">
         <li>
           <Link to={"./"}>Home</Link>
         </li>
@@ -14,7 +14,7 @@ export default function Header() {
           <Link to={"./register"}>Register</Link>
         </li>
         <li>
-          <Link to={"./createUpdataCof"}>CreateUpdataCof</Link>
+          <Link to={"./users"}>Users</Link>
         </li>
       </ul>
     </>

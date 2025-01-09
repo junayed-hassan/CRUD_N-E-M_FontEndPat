@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom"; // Correct import
+import { Link, useNavigate } from "react-router-dom"; // Correct import
 import useAuth from "../hooks/useAuth";
 
 function Register() {
   const { createUser } = useAuth();
-
+ const navigator = useNavigate();
+ 
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -33,6 +34,8 @@ function Register() {
 
       const result = await response.json();
       console.log("User saved:", result);
+      navigator("/")
+      e.target.reset()
     } catch (error) {
       console.error("Error during registration:", error);
       alert("Registration failed. Please try again.");
@@ -62,6 +65,7 @@ function Register() {
               id="name"
               name="name"
               placeholder="Enter your full name"
+              autoComplete="current-name"
               required
               className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
@@ -79,6 +83,7 @@ function Register() {
               id="email"
               name="email"
               placeholder="Enter your email"
+             autoComplete="current-email"
               required
               className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
@@ -96,6 +101,7 @@ function Register() {
               id="password"
               name="password"
               placeholder="Enter your password"
+              autoComplete="current-password"
               required
               className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
